@@ -82,7 +82,6 @@ Launch the Application:
 python iak_pipeline.py
 
 
-(Note: Run the main python script present in your repository).
 
 Sideload Engines: Upon first launch, click "Auto-Install Missing Dependencies" to let the app web-scrape and extract xTB and CREST automatically. For ORCA, download the Linux .tar.xz archive and use the "LOAD LOCAL ENGINE" button inside the app to seamlessly link it to the WSL bridge.
 
