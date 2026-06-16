@@ -113,3 +113,6 @@ Feel free to reach us if you have any issue, recommendations, or suggestions we 
  or  If you encounter any bugs or have feature requests, feel free to open an Issue.
 
  THANK YOU FOR USING THE APP--(LAAL DIL LAAL DIL)
+
+ <sub>Built with ❤️ by <a href="https://github.com/your-username">ASIFVERSE4</a></sub>
+</p>
