@@ -263,8 +263,7 @@ Issues, suggestions, and feature requests are welcome.
 
 ## 📄 License
 
-No license file is currently declared in the repository. Add a license before redistributing the project or incorporating it into another product.
-
+This project is licensed under the [MIT License](LICENSE). See the [LICENSE](LICENSE) file for the full license text.
 <div align="center">
 
 <a href="https://github.com/asifverse4/ASIF_iAKv2026">
