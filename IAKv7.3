@@ -1203,15 +1203,18 @@ class IAKApp:
         self.nb.pack(fill="both", expand=True, padx=15, pady=15)
         
         self.tab_main = tk.Frame(self.nb, bg=_C["bg"]); self.tab_res = tk.Frame(self.nb, bg=_C["bg"])
+        self.tab_cite = tk.Frame(self.nb, bg=_C["bg"])
         self.tab_graph = tk.Frame(self.nb, bg=_C["bg"])
         
         self.nb.add(self.tab_main, text=" ⚙️ Workflow Pipeline ")
         self.nb.add(self.tab_res, text=" 📁 Generated Results (Browser) ")
+        self.nb.add(self.tab_cite, text=" 📚 Cite This Repository ")
         if MATPLOTLIB_AVAILABLE:
             self.nb.add(self.tab_graph, text=" 📊 Trend Analysis & Graphs ")
         
         self._build_pipeline_tab(self.tab_main)
         self._build_results_tab(self.tab_res)
+        self._build_citation_tab(self.tab_cite)
         if MATPLOTLIB_AVAILABLE:
             self._build_graph_tab(self.tab_graph)
             
@@ -1344,6 +1347,70 @@ class IAKApp:
         make_listbox(0, " 1. Clusters "); make_listbox(1, " 2. xTB Opt ")
         make_listbox(2, " 3. CREST "); make_listbox(3, " 4. ORCA DFT ")
         make_listbox(4, " 5. TOP 3 COMPARE ", fg_color=_C["yellow"])
+
+    def _copy_to_clipboard(self, text, label):
+        try:
+            self.root.clipboard_clear()
+            self.root.clipboard_append(text)
+            self.root.update()
+            self.mb.showinfo("Copied", f"{label} copied to clipboard.")
+        except Exception as e:
+            self.mb.showerror("Clipboard Error", f"Failed to copy {label.lower()}:\n{e}")
+
+    def _open_repo_link(self):
+        repo_url = "https://github.com/asifverse4/ASIF_iAKv2026"
+        try:
+            webbrowser.open_new_tab(repo_url)
+        except Exception as e:
+            self.mb.showerror("Browser Error", f"Unable to open repository URL:\n{e}")
+
+    def _build_citation_tab(self, parent):
+        tk = self.tk
+        container = tk.Frame(parent, bg=_C["bg"])
+        container.pack(fill="both", expand=True, padx=20, pady=20)
+
+        panel = tk.LabelFrame(container, text=" REPOSITORY CITATION ", fg=_C["accent"], bg=_C["panel"], font=("Segoe UI", 11, "bold"), padx=15, pady=15)
+        panel.pack(fill="both", expand=True)
+
+        tk.Label(panel, text="IAK - Intelligent Automated Kluster-generator Pipeline v7.3", bg=_C["panel"], fg="white", font=("Segoe UI", 14, "bold"), anchor="w").pack(fill="x", pady=(0, 8))
+        tk.Label(panel, text="Author/Maintainer: Asif Raza", bg=_C["panel"], fg=_C["text"], font=("Segoe UI", 11), anchor="w").pack(fill="x", pady=2)
+        tk.Label(panel, text="Repository URL: https://github.com/asifverse4/ASIF_iAKv2026", bg=_C["panel"], fg=_C["accent"], font=("Segoe UI", 11), anchor="w").pack(fill="x", pady=(0, 10))
+
+        citation_text = (
+            "Raza, A. (2026). IAK - Intelligent Automated Kluster-generator Pipeline v7.3 "
+            "[Computer software]. GitHub. https://github.com/asifverse4/ASIF_iAKv2026 "
+            "(Accessed October 5, 2026)."
+        )
+        bibtex_text = (
+            "@software{Raza_IAK_2026,\n"
+            "  author  = {Asif Raza},\n"
+            "  title   = {IAK - Intelligent Automated Kluster-generator Pipeline v7.3},\n"
+            "  year    = {2026},\n"
+            "  version = {v7.3},\n"
+            "  url     = {https://github.com/asifverse4/ASIF_iAKv2026},\n"
+            "  note    = {Accessed: October 5, 2026}\n"
+            "}"
+        )
+
+        tk.Label(panel, text="Suggested Citation", bg=_C["panel"], fg=_C["yellow"], font=("Segoe UI", 11, "bold"), anchor="w").pack(fill="x", pady=(5, 4))
+        citation_box = tk.Text(panel, height=4, bg=_C["entry"], fg=_C["text"], insertbackground="white", bd=0, wrap="word", font=("Segoe UI", 10))
+        citation_box.insert("1.0", citation_text)
+        citation_box.config(state="disabled")
+        citation_box.pack(fill="x", pady=(0, 8))
+
+        tk.Label(panel, text="BibTeX", bg=_C["panel"], fg=_C["yellow"], font=("Segoe UI", 11, "bold"), anchor="w").pack(fill="x", pady=(5, 4))
+        bibtex_box = tk.Text(panel, height=9, bg=_C["entry"], fg=_C["text"], insertbackground="white", bd=0, wrap="none", font=("Consolas", 10))
+        bibtex_box.insert("1.0", bibtex_text)
+        bibtex_box.config(state="disabled")
+        bibtex_box.pack(fill="x", pady=(0, 8))
+
+        btn_row = tk.Frame(panel, bg=_C["panel"])
+        btn_row.pack(fill="x", pady=(5, 10))
+        tk.Button(btn_row, text="Copy Suggested Citation", command=lambda: self._copy_to_clipboard(citation_text, "Citation"), bg=_C["accent"], fg="white", font=("Segoe UI", 10, "bold"), relief="flat", padx=12).pack(side="left", padx=(0, 8))
+        tk.Button(btn_row, text="Copy BibTeX", command=lambda: self._copy_to_clipboard(bibtex_text, "BibTeX"), bg=_C["green"], fg="white", font=("Segoe UI", 10, "bold"), relief="flat", padx=12).pack(side="left", padx=8)
+        tk.Button(btn_row, text="Open Repository", command=self._open_repo_link, bg="#6e40c9", fg="white", font=("Segoe UI", 10, "bold"), relief="flat", padx=12).pack(side="left", padx=8)
+
+        tk.Label(panel, text="If this workflow contributes to your publication, please cite this repository.", bg=_C["panel"], fg=_C["muted"], font=("Segoe UI", 10, "italic"), anchor="w", justify="left").pack(fill="x", pady=(4, 0))
 
     def _build_graph_tab(self, parent):
         tk = self.tk
